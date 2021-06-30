@@ -1,5 +1,6 @@
 package com.byaoh.config;
 
+import com.byaoh.constant.JwtInfo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -16,7 +17,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @Configuration
 public class JwtTokenStoreConfig {
 	@Primary
-	@Bean(name = "jwtTokenStore")
+	@Bean(name = "myJwtTokenStore")
 	public TokenStore jwtTokenStore() {
 		return new JwtTokenStore(jwtAccessTokenConverter());
 	}
@@ -25,7 +26,7 @@ public class JwtTokenStoreConfig {
 	public JwtAccessTokenConverter jwtAccessTokenConverter() {
 		JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
 		//配置JWT使用的秘钥
-		accessTokenConverter.setSigningKey("test_key");
+		accessTokenConverter.setSigningKey(JwtInfo.KEY);
 		return accessTokenConverter;
 	}
 }
