@@ -7,7 +7,9 @@
 	<modules>
 		<module>oauth2-server</module>
 		<module>infrastructrue</module>
-	</modules>
+		<module>oauth2-jwt-server</module>
+        <module>oauth2-client</module>
+    </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -77,6 +79,11 @@
 				<version>5.6.3</version>
 			</dependency>
 
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt</artifactId>
+				<version>0.9.0</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
