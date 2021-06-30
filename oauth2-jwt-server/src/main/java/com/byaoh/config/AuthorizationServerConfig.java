@@ -1,6 +1,8 @@
 package com.byaoh.config;
 
+import com.byaoh.component.JwtTokenEnhancer;
 import com.byaoh.service.UserService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,7 +10,13 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 认证服务器配置
@@ -26,11 +34,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	private final TokenStore tokenStore;
 
-	public AuthorizationServerConfig(PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserService userService, TokenStore tokenStore) {
+	private final JwtAccessTokenConverter jwtAccessTokenConverter;
+
+	private final JwtTokenEnhancer jwtTokenEnhancer;
+
+	public AuthorizationServerConfig(PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserService userService, @Qualifier("jwtTokenStore") TokenStore tokenStore, JwtAccessTokenConverter jwtAccessTokenConverter, JwtTokenEnhancer jwtTokenEnhancer) {
 		this.passwordEncoder = passwordEncoder;
 		this.authenticationManager = authenticationManager;
 		this.userService = userService;
 		this.tokenStore = tokenStore;
+		this.jwtAccessTokenConverter = jwtAccessTokenConverter;
+		this.jwtTokenEnhancer = jwtTokenEnhancer;
 	}
 
 	/**
@@ -38,9 +52,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	 */
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+		TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+		List<TokenEnhancer> delegates = new ArrayList<>();
+		//配置JWT的内容增强器
+		delegates.add(jwtTokenEnhancer);
+		delegates.add(jwtAccessTokenConverter);
+		enhancerChain.setTokenEnhancers(delegates);
 		endpoints.authenticationManager(authenticationManager)
 			.userDetailsService(userService)
-			.tokenStore(tokenStore);
+			//配置令牌存储策略
+			.tokenStore(tokenStore)
+			.accessTokenConverter(jwtAccessTokenConverter)
+		;
 	}
 
 	@Override
