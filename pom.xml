@@ -4,85 +4,27 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>pom</packaging>
-	<modules>
-		<module>oauth2-server</module>
-		<module>infrastructrue</module>
-		<module>oauth2-jwt-server</module>
-        <module>oauth2-client</module>
-    </modules>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.11.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
 
 	<groupId>com.byaoh</groupId>
-	<artifactId>spring-oauth2-test</artifactId>
-	<version>0.1</version>
-
+	<artifactId>spring-oauth2-demo</artifactId>
+	<version>2.0</version>
 
 	<properties>
-		<java.version>1.8</java.version>
-		<spring-cloud.version>Hoxton.SR11</spring-cloud.version>
+		<java.version>17</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-		</dependency>
-	</dependencies>
+	<modules>
+	</modules>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>2.6.7</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.byaoh</groupId>
-				<artifactId>infrastructrue</artifactId>
-				<version>0.1</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>fastjson</artifactId>
-				<version>1.2.76</version>
-			</dependency>
-
-			<dependency>
-				<groupId>cn.hutool</groupId>
-				<artifactId>hutool-all</artifactId>
-				<version>5.6.3</version>
-			</dependency>
-
-			<dependency>
-				<groupId>io.jsonwebtoken</groupId>
-				<artifactId>jjwt</artifactId>
-				<version>0.9.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -90,8 +32,14 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
